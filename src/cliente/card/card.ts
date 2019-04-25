@@ -1,4 +1,3 @@
-import { Customer } from "../customer/customer";
 
 export class Card {
     id:string;

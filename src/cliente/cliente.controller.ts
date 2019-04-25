@@ -1,23 +1,29 @@
-import { Controller, Req, Post } from '@nestjs/common';
+import { Controller, Req, Post, Body, Put } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
-import { Customer } from './customer/customer';
-import { CustomerDTO } from './dto/customerDTO';
-import { Subscription } from 'rxjs';
-import { ClienteDTO } from './dto/clienteDTO';
 import {  Assinatura } from './interface/assinatura';
-import { AssinaturaDTO } from './dto/assinaturaDTO';
+import { Card } from 'dist/src/cliente/card/card';
 
 @Controller('cliente')
-export class ClienteController {
+export class clienteController {
 
     constructor(private readonly clienteService:ClienteService) {}
 
     @Post()
-    cadastrarCliente(@Req() assinatura:AssinaturaDTO):Promise<Assinatura> {
+    cadastrarCliente(@Body() assinatura:Assinatura):Promise<Assinatura> {
         try {
             return this.clienteService.createCliente(assinatura);
         } catch (error) {
             console.dir(error)
         }
     }
+
+    @Put()
+    alterarDadosCartao(@Body() card:Card):Promise<Card> {
+        try {
+            return this.clienteService.alterarCartao(card);
+        }catch(error) {
+            console.dir(error);
+        }
+    }
+
 }
