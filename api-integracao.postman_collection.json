@@ -1,0 +1,276 @@
+{
+	"info": {
+		"_postman_id": "b1b8ac42-fdd1-41e8-879e-895916c78679",
+		"name": "api-integracao",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "cadastro cartao",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"customer\":{\n\t    \"id\": \"cus_DlVg9vyuyDTN71or\",\n\t    \"name\": \"mateus\",\n\t    \"email\": \"mateussvinicius@hotmail.com\",\n\t    \"type\": \"individual\",\n\t    \"delinquent\": false,\n\t    \"created_at\": \"2019-04-24T04:01:09Z\",\n\t    \"updated_at\": \"2019-04-24T04:01:09Z\",\n\t    \"phones\": {}\n\t},\n\t\n\t\n\t\"card\": {\n\t\t\"number\":\"5425019448107793\",\n\t\t\"holder_name\":\"Mateus Vinicius\",\n\t\t\"exp_month\":1,\n\t\t\"exp_year\":20,\n\t\t\"cvv\":\"1234\",\n\t\t\"brand\":\"Elo\"\n\t\t\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/cartao",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cartao"
+					]
+				},
+				"description": "Endpoint para cadastro do cartão"
+			},
+			"response": []
+		},
+		{
+			"name": "cadastro cliente",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customer\": {\n\t\t\"name\":\"mateus\",\n\t\t\"email\":\"mateussvinicius@hotmail.com\",\n\t\t\"type\": \"individual\"\n\t}\n\t\n\t\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/cliente",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cliente"
+					]
+				},
+				"description": "endpoint para cadastro do cliente"
+			},
+			"response": []
+		},
+		{
+			"name": "cadastrar plano",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \n\t\t\"name\":\"plano\",\n\t\t\"installments\":[3],\n\t\t\"currency\": \"BRL\",\n\t\t\"interval\":\"month\",\n\t\t\"interval_count\":1,\n\t\t\"items\": [\n\t\t\t{\n\t\t\t\"quantity\": 1,\n\t\t\t\"pricing_scheme\": {\n\t\t\t\t\"schem_type\":\"unit\",\n\t\t\t\t\"price\":24\n\t\t}\n\t\t}]\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/plano",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"plano"
+					]
+				},
+				"description": "endpoint para cadastrar plano"
+			},
+			"response": []
+		},
+		{
+			"name": "criar assinatura",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"plan_id\": \"plan_8mPQpJWSPHrrDMR0\",\n\t\"customer_id\":\"cus_DlVg9vyuyDTN71or\",\n\t\"customer\": \n\t\t{\n    \"name\": \"mateus\",\n    \"email\": \"mateussvinicius@hotmail.com\",\n    \"type\": \"individual\"\n\n\t\t\t\n\t\t},\n\t\"card\":\t{\n    \"number\":\"5425019448107793\",\n    \"brand\": \"Elo\",\n    \"holder_name\": \"Mateus Vinicius\",\n    \"exp_month\": 1,\n    \"exp_year\": 2020\n\n\n    \n}\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/assinatura",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assinatura"
+					]
+				},
+				"description": "endpoint para criação de assinatura"
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar plano por periodo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n\t \n\t\t\"name\":\"plano\",\n\t\t\"installments\":[3],\n\t\t\"currency\": \"BRL\",\n\t\t\"trial_period_days\":7,\n\t\t\"interval\":\"month\",\n\t\t\"interval_count\":1,\n\t\t\"items\": [\n\t\t\t{\n\t\t\t\"quantity\": 1,\n\t\t\t\"pricing_scheme\": {\n\t\t\t\t\"schem_type\":\"unit\",\n\t\t\t\t\"price\":69\n\t\t}\n\t\t}]\n\t\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/plano",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"plano"
+					]
+				},
+				"description": "Plano com periodo de 7 dias"
+			},
+			"response": []
+		},
+		{
+			"name": "cadastro do plano trimestral por 69,90",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n\n\t\t\"name\":\"plano\",\n\t\t\"installments\":[3],\n\t\t\"currency\": \"BRL\",\n\t\t\"trial_period_days\":7,\n\t\t\"interval\":\"month\",\n\t\t\"interval_count\":3,\n\t\t\"items\": [\n\t\t\t{\n\t\t\t\"quantity\": 1,\n\t\t\t\"pricing_scheme\": {\n\t\t\t\t\"schem_type\":\"unit\",\n\t\t\t\t\"price\":6990\n\t\t}\n\t\t}]\n\t\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/plano",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"plano"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "atualiazar cartao",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"sub_DKg4Z3sDgcJeLl7o\",\n\t\"card\": {\n\t\t\"number\":\"5425019448107793\",\n\t\t\"holder_name\":\"Mateus Santana\",\n\t\t\"exp_month\":1,\n\t\t\"exp_year\":20,\n\t\t\"cvv\":\"123\",\n\t\t\"brand\":\"Elo\"\n\t\t\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/assinatura",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assinatura"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cancelar assinatura",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"id\":\"sub_GBqd4xluRDsEJdzw\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/assinatura",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assinatura"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sanarflix + Livro Yellowbook,",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \n\t\t\"name\":\"plano\",\n\t\t\"installments\":[3],\n\t\t\"currency\": \"BRL\",\n\t\t\"interval\":\"month\",\n\t\t\"interval_count\":1,\n\t\t\"items\": [\n\t\t\t{\n\t\t\t\"name\":\"Sanarflix + Livro Yellowbook\",\n\t\t\t\"cycles\":1,\n\t\t\t\"quantity\": 1,\n\t\t\t\"pricing_scheme\": {\n\t\t\t\t\"schem_type\":\"unit\",\n\t\t\t\t\"price\":164000\n\t\t}\n\t\t}]\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/plano",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"plano"
+					]
+				},
+				"description": "cadastro especial de plano"
+			},
+			"response": []
+		}
+	]
+}
