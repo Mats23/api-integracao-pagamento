@@ -4,7 +4,7 @@ Rode os seguintes comandos na raiz e dentro do microserviço:
 ```bash
 $ npm i #Para baixar as dependencias do projeto
 
-$ npm start #Iniciario o projeto
+$ npm start #Iniciar o projeto
 
 ```
 
