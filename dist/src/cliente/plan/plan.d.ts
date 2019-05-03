@@ -8,4 +8,5 @@ export declare class Plan {
     interval: string;
     interval_count: number;
     items: Item[];
+
 }

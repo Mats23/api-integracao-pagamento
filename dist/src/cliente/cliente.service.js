@@ -8,113 +8,55 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const assinatura_1 = require("./interface/assinatura");
 const card_1 = require("./card/card");
+const operators_1 = require("rxjs/operators");
+const microservices_1 = require("@nestjs/microservices");
 let ClienteService = class ClienteService {
     constructor(httpService) {
         this.httpService = httpService;
         this.url = 'https://api.mundipagg.com/core/v1/';
-        this.cliente = [];
-        this.assinatura = new assinatura_1.Assinatura();
         this.card = new card_1.Card();
-    }
-    alterarCartao(card) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise(resolver => {
-                const cliente = this.getAllCustomers().then(result => {
-                    return result.filter(cliente => {
-                        return cliente.name === card.holder_name;
-                    });
-                });
-                cliente.then(cliente => {
-                    this.getAllCards(cliente).then(result => {
-                        result.forEach(cartoes => {
-                        });
-                    });
-                });
-            });
+        this.assinatura = new assinatura_1.Assinatura();
+        this.clienteProxy = microservices_1.ClientProxyFactory.create({
+            transport: microservices_1.Transport.REDIS,
+            options: {
+                url: 'redis://localhost:6379'
+            }
         });
     }
     createCliente(assinatura) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const cliente = yield new Promise(resolve => {
-                this.httpService.post(this.url + 'customers', assinatura.customer).subscribe(retorno => {
-                    this.assinatura.customer = retorno.data;
-                    this.assinatura.card = assinatura.card;
-                    this.assinatura.plan = assinatura.plan;
-                    resolve(this.assinatura);
-                });
-            });
-            yield this.createCard(this.assinatura.card, this.assinatura.customer.id);
-            const plano = yield this.createPlan(this.assinatura.plan);
-            this.assinatura.plan_id = plano.plan.id;
-            this.assinatura.customer_id = cliente.customer.id;
-            return yield this.createAssinatura(this.assinatura);
-        });
+        const patternSave = { cmd: 'SAVE_CUSTOMERS' };
+        this.clienteProxy.send(patternSave, assinatura.customer).pipe(operators_1.map(customer => {
+            this.assinatura.customer = customer;
+            this.createCard(assinatura.card, customer.id).pipe(operators_1.map(card => {
+                this.assinatura.card = card;
+            }));
+            if (this.assinatura.card != null) {
+                this.createPlan(assinatura.plan).pipe(operators_1.map(plan => {
+                    this.assinatura.plan = plan;
+                }));
+            }
+            console.dir(this.assinatura);
+        }));
+        return;
     }
     createCard(card, id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise(resolve => {
-                this.httpService.post(this.url + 'customers/' + id + '/' + 'cards', card).subscribe(retorno => {
-                    this.assinatura.card = retorno.data;
-                    this.assinatura.card.number = card.number;
-                    resolve(this.assinatura);
-                });
-            });
-        });
+        return this.httpService.post(this.url + 'customers/' + id + '/' + 'cards', card).pipe(operators_1.map(response => {
+            return response.data;
+        }));
     }
     createPlan(plan) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise(resolve => {
-                plan.items.map(item => {
-                    item.name = 'Sanarflix';
-                });
-                this.httpService.post(this.url + 'plans', plan).subscribe(retorno => {
-                    this.assinatura.plan = retorno.data;
-                    resolve(this.assinatura);
-                });
-            });
-        });
+        return this.httpService.post(this.url + 'plans', plan).pipe(operators_1.map(response => {
+            return response.data;
+        }));
     }
     createAssinatura(assinatura) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise(resolve => {
-                this.httpService.post(this.url + 'subscriptions', assinatura).subscribe(retorno => {
-                    resolve(retorno.data);
-                });
-            });
-        });
-    }
-    getAllCustomers() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise(resolve => {
-                this.httpService.get(this.url + 'customers').subscribe(retorno => {
-                    this.cliente = retorno.data.data;
-                    resolve(this.cliente);
-                });
-            });
-        });
-    }
-    getAllCards(customer) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise(resolve => {
-                customer.forEach(cliente => {
-                    this.httpService.get(this.url + cliente.id + 'cards').subscribe(retorno => {
-                        resolve(retorno.data);
-                    });
-                });
-            });
-        });
+        return this.httpService.post(this.url + 'subscriptions', assinatura).pipe(operators_1.map(response => {
+            return response.data;
+        }));
     }
 };
 ClienteService = __decorate([

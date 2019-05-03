@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const cliente_service_1 = require("./cliente.service");
 const assinatura_1 = require("./interface/assinatura");
-const card_1 = require("dist/src/cliente/card/card");
+const rxjs_1 = require("rxjs");
 let clienteController = class clienteController {
     constructor(clienteService) {
         this.clienteService = clienteService;
@@ -28,29 +28,14 @@ let clienteController = class clienteController {
             console.dir(error);
         }
     }
-    alterarDadosCartao(card) {
-        try {
-            return this.clienteService.alterarCartao(card);
-        }
-        catch (error) {
-            console.dir(error);
-        }
-    }
 };
 __decorate([
     common_1.Post(),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [assinatura_1.Assinatura]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", rxjs_1.Observable)
 ], clienteController.prototype, "cadastrarCliente", null);
-__decorate([
-    common_1.Put(),
-    __param(0, common_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [card_1.Card]),
-    __metadata("design:returntype", Promise)
-], clienteController.prototype, "alterarDadosCartao", null);
 clienteController = __decorate([
     common_1.Controller('cliente'),
     __metadata("design:paramtypes", [cliente_service_1.ClienteService])

@@ -1,11 +1,17 @@
 import { Module, HttpModule } from '@nestjs/common';
 import { clienteController } from './cliente/cliente.controller';
 import { ClienteService } from './cliente/cliente.service';
+import { CartaoController } from './cartao/cartao.controller';
+import { CartaoService } from './cartao/cartao.service';
+import { PlanoController } from './plano/plano.controller';
+import { PlanoService } from './plano/plano.service';
+import { AssinaturaController } from './assinatura/assinatura.controller';
+import { AssinaturaService } from './assinatura/assinatura.service';
 
 
 @Module({
-  controllers: [ clienteController ],
-  providers: [ ClienteService],
+  controllers: [ clienteController, CartaoController, PlanoController, AssinaturaController],
+  providers: [ ClienteService, CartaoService, PlanoService, AssinaturaService],
   imports: [HttpModule.registerAsync({
     useFactory: () => ({
       headers:{               
@@ -14,5 +20,6 @@ import { ClienteService } from './cliente/cliente.service';
       }
     })
   })],
+
 })
 export class AppModule {}

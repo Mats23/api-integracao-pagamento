@@ -3,6 +3,7 @@ import { Customer } from "../customer/customer";
 import { Plan } from "../plan/plan";
 
 export class Assinatura {
+    id:string;
     customer:Customer;
     card:Card;
     plan:Plan;
